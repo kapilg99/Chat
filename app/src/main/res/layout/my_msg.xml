@@ -19,4 +19,13 @@
         android:layout_alignParentRight="true"
         android:text="Placeholder Text" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timestamp"
+        android:layout_alignBottom="@+id/message_body"
+        android:layout_toLeftOf="@+id/message_body"
+        android:text="Placeholder date"
+        android:layout_marginRight="5dp" />
+
 </RelativeLayout>
