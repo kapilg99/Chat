@@ -12,6 +12,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
@@ -60,7 +63,22 @@ public class RegisterActivity extends AppCompatActivity {
                     finish();
 //                            updateUI(user);
                 } else {
+//                    https://stackoverflow.com/a/48503254/12785964
                     // If sign in fails, display a message to the user.
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthWeakPasswordException e) {
+                        mPassword.setError(e.getMessage());
+                        mPassword.requestFocus();
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                        mEmail.setError(e.getMessage());
+                        mEmail.requestFocus();
+                    } catch (FirebaseAuthUserCollisionException e) {
+                        mEmail.setError(e.getMessage());
+                        mEmail.requestFocus();
+                    } catch (Exception e) {
+                        Log.e("RegisterActivity", e.getMessage());
+                    }
                     Log.e("RegisterActivty", "createUserWithEmail:failure", task.getException());
                     Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
 //                            updateUI(null);
