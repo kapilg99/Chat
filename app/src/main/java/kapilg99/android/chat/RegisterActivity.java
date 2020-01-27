@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.e("RegisterActivity", "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Authentication Successful.", Toast.LENGTH_LONG).show();
                     Intent sendToMain = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(sendToMain);
                     finish();
