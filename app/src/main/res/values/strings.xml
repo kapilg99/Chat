@@ -8,4 +8,5 @@
     <string name="log_out">Log Out</string>
     <string name="account_settings">Account Settings</string>
     <string name="all_users">All Users</string>
+    <string name="create_a_new_account">Create a New Account</string>
 </resources>

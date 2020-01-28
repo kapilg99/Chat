@@ -1,6 +1,8 @@
 package kapilg99.android.chat;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,12 +22,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private TextInputLayout mDisplayName, mEmail, mPassword;
     private Button mCreateButton;
     private FirebaseAuth mAuth;
+    private MaterialToolbar materialToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +38,18 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        materialToolbar = findViewById(R.id.register_toolbar);
         mDisplayName = findViewById(R.id.reg_display_name);
         mEmail = findViewById(R.id.reg_email);
         mPassword = findViewById(R.id.reg_password);
         mCreateButton = findViewById(R.id.reg_create_account);
+
+        setSupportActionBar(materialToolbar);
+        getSupportActionBar().setTitle("Create Account");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final Drawable upArrow = ContextCompat.getDrawable(RegisterActivity.this, R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(ContextCompat.getColor(RegisterActivity.this, R.color.colorTextIcons), PorterDuff.Mode.SRC_ATOP);
+        RegisterActivity.this.getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +64,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser(String displayName, String email, String password) {
+        if (displayName == null || displayName == "") {
+            mDisplayName.setError("Can not be Empty");
+            mDisplayName.requestFocus();
+        }
+        if (email == null || email == "") {
+            mEmail.setError("Can not be Empty");
+            mEmail.requestFocus();
+        }
+        if (password == null || password == "") {
+            mPassword.setError("Can not be Empty");
+            mPassword.requestFocus();
+        }
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
