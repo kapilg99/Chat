@@ -117,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         Log.e("RegisterActivity", e.getMessage());
                     }
-                    Log.e("RegisterActivty", "createUserWithEmail:failure", task.getException());
+                    Log.e("RegisterActivity", "createUserWithEmail:failure", task.getException());
                     Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
 //                            updateUI(null);
                 }

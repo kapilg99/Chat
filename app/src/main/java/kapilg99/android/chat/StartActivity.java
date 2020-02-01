@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivity extends AppCompatActivity {
 
-    private Button mRegButton;
+    private Button mRegButton, mSigninButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +17,7 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         mRegButton = findViewById(R.id.start_reg_activity);
+        mSigninButton = findViewById(R.id.start_login_activity);
 
         mRegButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,5 +26,15 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(regIntent);
             }
         });
+
+        mSigninButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent regIntent = new Intent(StartActivity.this, LoginActivity.class);
+                startActivity(regIntent);
+            }
+        });
+
+
     }
 }
