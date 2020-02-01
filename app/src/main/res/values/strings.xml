@@ -9,4 +9,6 @@
     <string name="account_settings">Account Settings</string>
     <string name="all_users">All Users</string>
     <string name="create_a_new_account">Create a New Account</string>
+    <string name="already_have_an_account">Already have an account</string>
+    <string name="start_activity">Welcome to Chat!</string>
 </resources>

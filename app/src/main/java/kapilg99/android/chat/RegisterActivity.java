@@ -1,9 +1,11 @@
 package kapilg99.android.chat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private MaterialToolbar materialToolbar;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.reg_email);
         mPassword = findViewById(R.id.reg_password);
         mCreateButton = findViewById(R.id.reg_create_account);
+        progressDialog = new ProgressDialog(this);
 
         setSupportActionBar(materialToolbar);
         getSupportActionBar().setTitle("Create Account");
@@ -58,7 +63,13 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = mEmail.getEditText().getText().toString();
                 String password = mPassword.getEditText().getText().toString();
 
-                registerUser(displayName, email, password);
+                if (!TextUtils.isEmpty(displayName) || !TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
+                    progressDialog.setTitle("Registering user");
+                    progressDialog.setMessage("Please wait while we set up your account.");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+                    registerUser(displayName, email, password);
+                }
             }
         });
     }
@@ -80,6 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    progressDialog.dismiss();
                     Log.e("RegisterActivity", "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     Toast.makeText(RegisterActivity.this, "Authentication Successful.", Toast.LENGTH_LONG).show();
@@ -88,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                     finish();
 //                            updateUI(user);
                 } else {
+                    progressDialog.hide();
 //                    https://stackoverflow.com/a/48503254/12785964
                     // If sign in fails, display a message to the user.
                     try {
@@ -108,7 +121,6 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
 //                            updateUI(null);
                 }
-
             }
         });
     }
