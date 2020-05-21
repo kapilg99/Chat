@@ -1,4 +1,4 @@
 # Chat
-Ongoing project about Android Chat application
+Ongoing project : Android Chat application
 <br>
 Database used : Firebase
