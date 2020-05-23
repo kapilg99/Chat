@@ -96,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     Toast.makeText(RegisterActivity.this, "Authentication Successful.", Toast.LENGTH_LONG).show();
                     Intent sendToMain = new Intent(RegisterActivity.this, MainActivity.class);
+                    sendToMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(sendToMain);
                     finish();
 //                            updateUI(user);
