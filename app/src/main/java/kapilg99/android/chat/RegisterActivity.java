@@ -21,10 +21,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -34,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     private MaterialToolbar materialToolbar;
 
     private ProgressDialog progressDialog;
+
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void registerUser(String displayName, String email, String password) {
+    private void registerUser(final String displayName, String email, String password) {
         if (displayName == null || displayName == "") {
             mDisplayName.setError("Can not be Empty");
             mDisplayName.requestFocus();
@@ -91,15 +97,35 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    Log.e("RegisterActivity", "createUserWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(RegisterActivity.this, "Authentication Successful.", Toast.LENGTH_LONG).show();
-                    Intent sendToMain = new Intent(RegisterActivity.this, MainActivity.class);
-                    sendToMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(sendToMain);
-                    finish();
-//                            updateUI(user);
+
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String uid = currentUser.getUid();
+
+                    mDatabase = FirebaseDatabase.getInstance().getReference()
+                            .child("users").child(uid);
+
+                    HashMap<String, String> userMap = new HashMap<>();
+                    userMap.put("name", displayName);
+                    userMap.put("status", "Hey there, I'm using Chat");
+                    userMap.put("image", "default");
+                    userMap.put("thumb_image", "default_thumb_image");
+
+                    mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                progressDialog.dismiss();
+                                Log.e("RegisterActivity", "createUserWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Toast.makeText(RegisterActivity.this, "Authentication Successful.", Toast.LENGTH_LONG).show();
+                                Intent sendToMain = new Intent(RegisterActivity.this, MainActivity.class);
+                                sendToMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(sendToMain);
+                                finish();
+                            }
+                        }
+                    });
+
                 } else {
                     progressDialog.hide();
 //                    https://stackoverflow.com/a/48503254/12785964
