@@ -12,23 +12,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText mEmail, mPassword;
     private Button mSignInButton;
     private FirebaseAuth mAuth;
-    private MaterialToolbar materialToolbar;
+    private Toolbar mToolbar;
     private ProgressDialog progressDialog;
 
     @Override
@@ -38,13 +38,13 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        materialToolbar = findViewById(R.id.login_toolbar);
+        mToolbar = findViewById(R.id.login_toolbar);
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
         mSignInButton = findViewById(R.id.email_sign_in_button);
         progressDialog = new ProgressDialog(this);
 
-        setSupportActionBar(materialToolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Sign in");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow = ContextCompat.getDrawable(LoginActivity.this, R.drawable.abc_ic_ab_back_material);

@@ -1,13 +1,14 @@
 package kapilg99.android.chat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     Button changeStatus, changeImage;
     CircleImageView avatar;
     TextView mDisplayName, mStatus;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,11 @@ public class SettingsActivity extends AppCompatActivity {
         avatar = findViewById(R.id.settings_default_avatar);
         mDisplayName = findViewById(R.id.displayname);
         mStatus = findViewById(R.id.status);
+
+        mToolbar = findViewById(R.id.appbar_settings);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Account Settings");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = currentUser.getUid();
@@ -63,7 +70,10 @@ public class SettingsActivity extends AppCompatActivity {
         changeStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String status_text = mStatus.getText().toString();
+                Intent sendToStatus = new Intent(SettingsActivity.this, StatusActivity.class);
+                sendToStatus.putExtra("status_text", status_text);
+                startActivity(sendToStatus);
             }
         });
 
