@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout mDisplayName, mEmail, mPassword;
     private Button mCreateButton;
     private FirebaseAuth mAuth;
-    private MaterialToolbar materialToolbar;
+    private Toolbar mToolbar;
 
     private ProgressDialog progressDialog;
 
@@ -48,14 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        materialToolbar = findViewById(R.id.register_toolbar);
+        mToolbar = findViewById(R.id.register_toolbar);
         mDisplayName = findViewById(R.id.reg_display_name);
         mEmail = findViewById(R.id.reg_email);
         mPassword = findViewById(R.id.reg_password);
         mCreateButton = findViewById(R.id.reg_create_account);
         progressDialog = new ProgressDialog(this);
 
-        setSupportActionBar(materialToolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Create Account");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow = ContextCompat.getDrawable(RegisterActivity.this, R.drawable.abc_ic_ab_back_material);
