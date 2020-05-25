@@ -2,12 +2,21 @@ package kapilg99.android.chat;
 
 public class Users {
 
-    private String name, status, image;
+    private String name, status, image, thumbImage;
 
-    public Users(String name, String status, String image) {
+    public String getThumbImage() {
+        return thumbImage;
+    }
+
+    public void setThumbImage(String thumbImage) {
+        this.thumbImage = thumbImage;
+    }
+
+    public Users(String name, String status, String image, String thumbImage) {
         this.name = name;
         this.status = status;
         this.image = image;
+        this.thumbImage = thumbImage;
     }
 
     public Users() {

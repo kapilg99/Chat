@@ -2,9 +2,11 @@ package kapilg99.android.chat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,9 +34,14 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -67,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert currentUser != null;
         String uid = currentUser.getUid();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -79,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 mDisplayName.setText(name);
                 mStatus.setText(status);
-                Picasso.get().load(image).into(avatar);
+                Picasso.get().load(image).placeholder(R.drawable.avatar_default2).into(avatar);
 
             }
 
@@ -120,6 +128,7 @@ public class SettingsActivity extends AppCompatActivity {
             String destinationFilename = mDisplayName.getText().toString() + ".jpg";
             UCrop uCrop = UCrop.of(data.getData(), Uri.fromFile(new File(getCacheDir(), destinationFilename)));
             uCrop.withAspectRatio(1, 1);
+            uCrop.withMaxResultSize(500, 500);
             uCrop.start(this);
         }
         if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
@@ -131,6 +140,26 @@ public class SettingsActivity extends AppCompatActivity {
 
             final Uri resultUri = UCrop.getOutput(data);
             String profName = currentUser.getUid();
+
+            File thumb_filepath = new File(resultUri.getPath());
+            byte[] compressedByteArray = new byte[0];
+
+            try {
+                Bitmap compressedImageBitmap = new Compressor(this)
+                        .setMaxHeight(200)
+                        .setMaxWidth(200)
+                        .setQuality(75)
+                        .compressToBitmap(thumb_filepath);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                compressedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                compressedByteArray = baos.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Error in Compression", Arrays.toString(e.getStackTrace()));
+            }
+
             Toast.makeText(this, resultUri.toString(), Toast.LENGTH_SHORT).show();
             final StorageReference filepath = mImageStorage.child("profile_images").child(profName + ".jpg");
             UploadTask uploadTask = filepath.putFile(resultUri);
@@ -138,7 +167,7 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()) {
-                        throw task.getException();
+                        throw Objects.requireNonNull(task.getException());
                     }
                     return filepath.getDownloadUrl();
                 }
@@ -163,6 +192,38 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         }
                     });
+            final StorageReference thumbPath = mImageStorage.child("profile_images").child("thumbs").child(profName + ".jpg");
+            UploadTask uploadTask_thumb = thumbPath.putBytes(compressedByteArray);
+            Task<Uri> uriThumbTask = uploadTask_thumb.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return thumbPath.getDownloadUrl();
+                }
+            })
+                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+                                progressDialog.dismiss();
+                                mDatabaseReference.child("thumb_image").setValue(downloadUri.toString())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(SettingsActivity.this, "Thumb Profile uploaded in Storage and Database", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(SettingsActivity.this, "Thumb Profile uploaded in Storage", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
+
         } else if (requestCode == UCrop.RESULT_ERROR) {
             Toast.makeText(this, "UCrop Result error", Toast.LENGTH_SHORT).show();
         }

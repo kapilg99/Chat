@@ -11,9 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,11 +27,6 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 
@@ -108,8 +107,8 @@ public class RegisterActivity extends AppCompatActivity {
                     HashMap<String, String> userMap = new HashMap<>();
                     userMap.put("name", displayName);
                     userMap.put("status", "Hey there, I'm using Chat");
-                    userMap.put("image", "default");
-                    userMap.put("thumb_image", "default_thumb_image");
+                    userMap.put("image", "https://firebasestorage.googleapis.com/v0/b/chat-7dd7d.appspot.com/o/profile_images%2Favatar_default2.png?alt=media&token=4d21def7-e3a6-4f0a-b84a-6d67667582ea");
+                    userMap.put("thumb_image", "https://firebasestorage.googleapis.com/v0/b/chat-7dd7d.appspot.com/o/profile_images%2Favatar_default2.png?alt=media&token=4d21def7-e3a6-4f0a-b84a-6d67667582ea");
 
                     mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

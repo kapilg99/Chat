@@ -86,13 +86,11 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.account_settings):
                 Intent sendToSettings = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(sendToSettings);
-                finish();
                 return true;
 
             case (R.id.all_users):
                 Intent sendToAllUsers = new Intent(MainActivity.this, UsersActivity.class);
                 startActivity(sendToAllUsers);
-                finish();
                 return true;
 
         }
