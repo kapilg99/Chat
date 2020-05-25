@@ -17,14 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".UsersActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
             android:name=".StatusActivity"
-            android:parentActivityName=".SettingsActivity"></activity>
+            android:parentActivityName=".SettingsActivity" />
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" />
-        <!--        <activity-->
-        <!--            android:name=".ui.login.SettingsActivity"-->
-        <!--            android:label="@string/title_activity_settings" />-->
+            android:parentActivityName=".MainActivity" /> <!-- <activity -->
+        <!-- android:name=".ui.login.SettingsActivity" -->
+        <!-- android:label="@string/title_activity_settings" /> -->
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
@@ -32,12 +34,10 @@
         <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".StartActivity" />
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity android:name=".StartActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
