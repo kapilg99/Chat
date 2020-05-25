@@ -1,5 +1,6 @@
 package kapilg99.android.chat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -43,6 +46,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private static final int GALLERY_PICK = 1;
     private StorageReference mImageStorage;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 mDisplayName.setText(name);
                 mStatus.setText(status);
+                Picasso.get().load(image).into(avatar);
 
             }
 
@@ -118,21 +123,48 @@ public class SettingsActivity extends AppCompatActivity {
             uCrop.start(this);
         }
         if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+
+            progressDialog = new ProgressDialog(SettingsActivity.this);
+            progressDialog.setTitle("Uploading Image");
+            progressDialog.setMessage("Please wait while we upload image..");
+            progressDialog.setCanceledOnTouchOutside(false);
+
             final Uri resultUri = UCrop.getOutput(data);
+            String profName = currentUser.getUid();
             Toast.makeText(this, resultUri.toString(), Toast.LENGTH_SHORT).show();
-            StorageReference filepath = mImageStorage.child("profile_images").child(mDisplayName.getText().toString() + ".jpg");
-            filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            final StorageReference filepath = mImageStorage.child("profile_images").child(profName + ".jpg");
+            UploadTask uploadTask = filepath.putFile(resultUri);
+            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(SettingsActivity.this, "Profile uploaded", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(SettingsActivity.this, "Profile uploaded", Toast.LENGTH_SHORT).show();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
                     }
+                    return filepath.getDownloadUrl();
                 }
-            });
+            })
+                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+                                progressDialog.dismiss();
+                                mDatabaseReference.child("image").setValue(downloadUri.toString())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(SettingsActivity.this, "Profile uploaded in Storage and Database", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(SettingsActivity.this, "Profile uploaded in Storage", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
         } else if (requestCode == UCrop.RESULT_ERROR) {
-            Toast.makeText(this, "Ucrop Result error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "UCrop Result error", Toast.LENGTH_SHORT).show();
         }
     }
 
