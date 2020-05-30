@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -41,6 +43,7 @@ public class UsersActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         userDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        userDatabase.keepSynced(true);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = findViewById(R.id.users_list);
@@ -117,16 +120,44 @@ public class UsersActivity extends AppCompatActivity {
             userStatusView.setText(status);
         }
 
-        public void setImage(String image) {
-            CircleImageView thumbView = view.findViewById(R.id.user_avatar);
-            Picasso.get().load(image).into(thumbView);
+        public void setImage(final String image) {
+            final CircleImageView thumbView = view.findViewById(R.id.user_avatar);
+            Picasso.get().load(image)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .placeholder(R.drawable.avatar_default2)
+                    .into(thumbView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(image)
+                                    .placeholder(R.drawable.avatar_default2)
+                                    .into(thumbView);
+                        }
+                    });
         }
 
-        public void setThumbImage(String thumbImage) {
-            CircleImageView thumbView = view.findViewById(R.id.user_avatar);
+        public void setThumbImage(final String thumbImage) {
+            final CircleImageView thumbView = view.findViewById(R.id.user_avatar);
             Picasso.get().load(thumbImage)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.drawable.avatar_default2)
-                    .into(thumbView);
+                    .into(thumbView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(thumbImage)
+                                    .placeholder(R.drawable.avatar_default2)
+                                    .into(thumbView);
+                        }
+                    });
         }
     }
 }

@@ -31,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
@@ -77,18 +79,31 @@ public class SettingsActivity extends AppCompatActivity {
         assert currentUser != null;
         String uid = currentUser.getUid();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+        mDatabaseReference.keepSynced(true);
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("name").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
-                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
+                final String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
                 mDisplayName.setText(name);
                 mStatus.setText(status);
 //                Picasso.get().load(image).placeholder(R.drawable.avatar_default2).into(avatar);
-                Picasso.get().load(thumb_image).placeholder(R.drawable.avatar_default2).into(avatar);
+                Picasso.get().load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE)
+                        .placeholder(R.drawable.avatar_default2).into(avatar, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Picasso.get().load(thumb_image)
+                                .placeholder(R.drawable.avatar_default2).into(avatar);
+                    }
+                });
 
             }
 

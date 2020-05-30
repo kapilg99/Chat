@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -65,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
         currentState = NOT_FREINDS;
 
         userDB = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+        userDB.keepSynced(true);
         friendRequestDatabase = FirebaseDatabase.getInstance().getReference().child("friend_request");
         friendListDatabase = FirebaseDatabase.getInstance().getReference().child("friends");
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -79,12 +82,24 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("name").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
 //                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
                 displayName.setText(name);
                 displayStatus.setText(status);
-                Picasso.get().load(image).placeholder(R.drawable.avatar_default2).into(displayPic);
+                Picasso.get().load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                        .placeholder(R.drawable.avatar_default2).into(displayPic, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Picasso.get().load(image)
+                                .placeholder(R.drawable.avatar_default2).into(displayPic);
+                    }
+                });
 
                 friendRequestDatabase.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
