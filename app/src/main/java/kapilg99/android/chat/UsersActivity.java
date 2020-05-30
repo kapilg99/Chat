@@ -1,5 +1,6 @@
 package kapilg99.android.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -25,6 +28,7 @@ public class UsersActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private DatabaseReference userDatabase;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class UsersActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         userDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = findViewById(R.id.users_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -63,10 +68,24 @@ public class UsersActivity extends AppCompatActivity {
 
                     @Override
                     protected void onBindViewHolder(@NonNull UsersViewHolder holder, int position, @NonNull Users user) {
+                        if (currentUser.getUid().equals(getRef(position).getKey())) {
+                            return;
+                        }
                         holder.setName(user.getName());
                         holder.setStatus(user.getStatus());
 //                        holder.setImage(user.getImage());
-                        holder.setThumbImage(user.getThumbImage());
+                        holder.setThumbImage(user.getThumb_image());
+
+                        final String user_id = getRef(position).getKey();
+
+                        holder.view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent profileIntent = new Intent(UsersActivity.this, ProfileActivity.class);
+                                profileIntent.putExtra("userid", user_id);
+                                startActivity(profileIntent);
+                            }
+                        });
                     }
 
                     @Override
@@ -105,7 +124,9 @@ public class UsersActivity extends AppCompatActivity {
 
         public void setThumbImage(String thumbImage) {
             CircleImageView thumbView = view.findViewById(R.id.user_avatar);
-            Picasso.get().load(thumbImage).placeholder(R.drawable.avatar_default2).into(thumbView);
+            Picasso.get().load(thumbImage)
+                    .placeholder(R.drawable.avatar_default2)
+                    .into(thumbView);
         }
     }
 }
