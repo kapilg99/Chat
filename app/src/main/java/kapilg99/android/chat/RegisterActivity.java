@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 
@@ -104,12 +105,14 @@ public class RegisterActivity extends AppCompatActivity {
                     mDatabase = FirebaseDatabase.getInstance().getReference()
                             .child("users").child(uid);
 
+                    String tokenId = FirebaseInstanceId.getInstance().getToken();
+
                     HashMap<String, String> userMap = new HashMap<>();
                     userMap.put("name", displayName);
                     userMap.put("status", "Hey there, I'm using Chat");
                     userMap.put("image", "https://firebasestorage.googleapis.com/v0/b/chat-7dd7d.appspot.com/o/profile_images%2Favatar_default2.png?alt=media&token=4d21def7-e3a6-4f0a-b84a-6d67667582ea");
                     userMap.put("thumb_image", "https://firebasestorage.googleapis.com/v0/b/chat-7dd7d.appspot.com/o/profile_images%2Favatar_default2.png?alt=media&token=4d21def7-e3a6-4f0a-b84a-6d67667582ea");
-
+                    userMap.put("device_token", tokenId);
                     mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

@@ -18,10 +18,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Toolbar mToolbar;
     private ProgressDialog progressDialog;
+    private DatabaseReference userDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        userDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
         mToolbar = findViewById(R.id.login_toolbar);
         mEmail = findViewById(R.id.email);
@@ -83,6 +89,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
+                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                    String currentUserId = mAuth.getCurrentUser().getUid();
+
+                    userDatabase.child(currentUserId).child("device_token").setValue(deviceToken)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(LoginActivity.this, "Device token stored", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.e("LoginActivity", "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();

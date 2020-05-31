@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -42,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference userDB;
     private DatabaseReference friendRequestDatabase;
     private DatabaseReference friendListDatabase;
+    private DatabaseReference notificationDatabase;
     FirebaseUser currentUser;
     private static final String NOT_FREINDS = "not_friends";
     private static final String REQUEST_SENT = "request_sent";
@@ -70,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         userDB.keepSynced(true);
         friendRequestDatabase = FirebaseDatabase.getInstance().getReference().child("friend_request");
         friendListDatabase = FirebaseDatabase.getInstance().getReference().child("friends");
+        notificationDatabase = FirebaseDatabase.getInstance().getReference().child("notifications");
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mProgressDialog = new ProgressDialog(this);
@@ -184,6 +187,16 @@ public class ProfileActivity extends AppCompatActivity {
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
+                                                        HashMap<String, String> notificationData = new HashMap<>();
+                                                        notificationData.put("from", currentUser.getUid());
+                                                        notificationData.put("type", "request");
+                                                        notificationDatabase.child(userId).push().setValue(notificationData)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                                    }
+                                                                });
                                                         Toast.makeText(ProfileActivity.this, "Friend Request received", Toast.LENGTH_SHORT).show();
                                                         currentState = REQUEST_SENT;
                                                         sendRequest.setText(R.string.cancel_request);

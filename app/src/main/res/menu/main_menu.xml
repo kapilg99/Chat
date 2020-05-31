@@ -8,9 +8,9 @@
         android:id="@+id/account_settings"
         android:layout_gravity="center" />
     <item
-        android:id="@+id/main_logout_button"
-        android:title="@string/log_out" />
-    <item
         android:id="@+id/invite"
         android:title="@string/invite" />
+    <item
+        android:id="@+id/main_logout_button"
+        android:title="@string/log_out" />
 </menu>
