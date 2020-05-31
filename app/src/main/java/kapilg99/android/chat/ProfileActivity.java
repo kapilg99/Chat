@@ -76,6 +76,8 @@ public class ProfileActivity extends AppCompatActivity {
         mProgressDialog.setTitle("Loading User Data");
         mProgressDialog.setMessage("Please wait while we load data...");
         mProgressDialog.setCanceledOnTouchOutside(false);
+        declineRequest.setVisibility(View.INVISIBLE);
+        declineRequest.setEnabled(false);
 
         userDB.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,12 +114,16 @@ public class ProfileActivity extends AppCompatActivity {
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
                                 sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
                                 sendRequest.setTextColor(Color.BLACK);
+                                declineRequest.setEnabled(true);
+                                declineRequest.setVisibility(View.VISIBLE);
                             } else if (requestType.equals("sent")) {
                                 currentState = REQUEST_SENT;
                                 sendRequest.setText(R.string.cancel_request);
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                 sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                 sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                declineRequest.setEnabled(false);
+                                declineRequest.setVisibility(View.INVISIBLE);
                             }
                         } else {
                             friendListDatabase.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -129,6 +135,8 @@ public class ProfileActivity extends AppCompatActivity {
                                         sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                         sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                         sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                        declineRequest.setEnabled(false);
+                                        declineRequest.setVisibility(View.INVISIBLE);
                                     }
                                 }
 
@@ -182,6 +190,8 @@ public class ProfileActivity extends AppCompatActivity {
                                                         sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                                         sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                                         sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                                        declineRequest.setEnabled(false);
+                                                        declineRequest.setVisibility(View.INVISIBLE);
                                                     }
                                                 });
                                     } else {
@@ -206,6 +216,8 @@ public class ProfileActivity extends AppCompatActivity {
                                             sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
                                             sendRequest.setTextColor(Color.BLACK);
                                             sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                            declineRequest.setEnabled(false);
+                                            declineRequest.setVisibility(View.INVISIBLE);
                                         }
                                     });
                             sendRequest.setEnabled(true);
@@ -236,6 +248,8 @@ public class ProfileActivity extends AppCompatActivity {
                                                                                     sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                                                                     sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                                                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                                                                    declineRequest.setEnabled(false);
+                                                                                    declineRequest.setVisibility(View.INVISIBLE);
                                                                                 }
                                                                             });
                                                                     sendRequest.setEnabled(true);
@@ -261,11 +275,39 @@ public class ProfileActivity extends AppCompatActivity {
                                                     sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
                                                     sendRequest.setTextColor(Color.BLACK);
                                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                                    declineRequest.setEnabled(false);
+                                                    declineRequest.setVisibility(View.INVISIBLE);
                                                 }
                                             });
                                 }
                             });
                 }
+            }
+        });
+
+        declineRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                friendRequestDatabase.child(currentUser.getUid()).child(userId).removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                friendRequestDatabase.child(userId).child(currentUser.getUid()).removeValue()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(ProfileActivity.this, "Friend Request Declined", Toast.LENGTH_SHORT).show();
+                                                currentState = NOT_FREINDS;
+                                                sendRequest.setText(R.string.send_request);
+                                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                                                sendRequest.setTextColor(Color.BLACK);
+                                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                                declineRequest.setEnabled(false);
+                                                declineRequest.setVisibility(View.INVISIBLE);
+                                            }
+                                        });
+                            }
+                        });
             }
         });
     }
