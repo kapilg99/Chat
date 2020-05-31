@@ -38,4 +38,7 @@
     <string name="decline_request">Decline Request</string>
     <string name="accept_request">Accept Request</string>
     <string name="unfriend">Unfriend</string>
+    <string name="invite">Invite</string>
+    <string name="invite_text">I\'m inviting you to try Chat!</string>
+    <string name="invite_link">Link</string>
 </resources>

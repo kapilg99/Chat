@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     //    FirebaseApp.initializeApp(this);
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
     private Toolbar mToolbar;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseApp.initializeApp(MainActivity.this);
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
             sendToStart();
@@ -92,6 +94,19 @@ public class MainActivity extends AppCompatActivity {
                 Intent sendToAllUsers = new Intent(MainActivity.this, UsersActivity.class);
                 startActivity(sendToAllUsers);
                 return true;
+
+            case (R.id.invite):
+
+                String inviteText = getResources().getString(R.string.invite_text) + "\n"
+                        + getResources().getString(R.string.invite_link);
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, inviteText);
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+
 
         }
 
