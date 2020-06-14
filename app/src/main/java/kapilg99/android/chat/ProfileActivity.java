@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,7 +51,6 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String REQUEST_SENT = "request_sent";
     private static final String REQUEST_RECEIVED = "request_received";
     private static final String FRIENDS = "friends";
-    private static final String UNFRIEND = "unfriend";
 
     private ProgressDialog mProgressDialog;
 
@@ -211,27 +209,27 @@ public class ProfileActivity extends AppCompatActivity {
 
 //      ============================   CANCEL REQUEST   ==========================================
                 if (currentState.equals(REQUEST_SENT)) {
-                    friendRequestDatabase.child(currentUser.getUid()).child(userId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    Map requestMap = new HashMap();
+                    requestMap.put("friend_request/" + currentUser.getUid() + "/" + userId, null);
+                    requestMap.put("friend_request/" + userId + "/" + currentUser.getUid(), null);
+                    requestMap.put("notifications/" + userId, null);
+
+                    rootDatabase.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
                         @Override
-                        public void onSuccess(Void aVoid) {
-                            friendRequestDatabase.child(userId).child(currentUser.getUid()).removeValue()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            notificationDatabase.child(userId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    currentState = NOT_FRIENDS;
-                                                    sendRequest.setText(R.string.send_request);
-                                                    sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
-                                                    sendRequest.setTextColor(Color.BLACK);
-                                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
-                                                    declineRequest.setEnabled(false);
-                                                    declineRequest.setVisibility(View.INVISIBLE);
-                                                }
-                                            });
-                                        }
-                                    });
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Toast.makeText(ProfileActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.e("Line 224", databaseError.getDetails());
+                            } else {
+                                currentState = NOT_FRIENDS;
+                                sendRequest.setText(R.string.send_request);
+                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                                sendRequest.setTextColor(Color.BLACK);
+                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                declineRequest.setEnabled(false);
+                                declineRequest.setVisibility(View.INVISIBLE);
+                            }
+                            sendRequest.setVisibility(View.VISIBLE);
                             sendRequest.setEnabled(true);
                         }
                     });
@@ -242,6 +240,8 @@ public class ProfileActivity extends AppCompatActivity {
                     Map requestMap = new HashMap();
                     requestMap.put("friends/" + currentUser.getUid() + "/" + userId, currentDate);
                     requestMap.put("friends/" + userId + "/" + currentUser.getUid(), currentDate);
+                    requestMap.put("friend_request/" + currentUser.getUid() + "/" + userId, null);
+                    requestMap.put("friend_request/" + userId + "/" + currentUser.getUid(), null);
 
                     rootDatabase.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
                         @Override
@@ -249,54 +249,43 @@ public class ProfileActivity extends AppCompatActivity {
                             if (databaseError != null) {
                                 Log.e("Line 251", databaseError.getDetails());
                             } else {
-                                friendRequestDatabase.child(currentUser.getUid()).child(userId).removeValue()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                friendRequestDatabase.child(userId).child(currentUser.getUid()).removeValue()
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
-                                                                Toast.makeText(ProfileActivity.this, "Request Accepted", Toast.LENGTH_SHORT).show();
-                                                                currentState = FRIENDS;
-                                                                sendRequest.setText(R.string.unfriend);
-                                                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                                                                sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
-                                                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
-                                                                declineRequest.setEnabled(false);
-                                                                declineRequest.setVisibility(View.INVISIBLE);
-                                                            }
-                                                        });
-                                                sendRequest.setEnabled(true);
-                                            }
-                                        });
+                                Toast.makeText(ProfileActivity.this, "Request Accepted", Toast.LENGTH_SHORT).show();
+                                currentState = FRIENDS;
+                                sendRequest.setText(R.string.unfriend);
+                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
+                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                declineRequest.setEnabled(false);
+                                declineRequest.setVisibility(View.INVISIBLE);
                             }
+                            sendRequest.setEnabled(true);
                         }
                     });
                 }
 //      ============================   UNFRIEND   ==========================================
                 if (currentState.equals(FRIENDS)) {
-                    friendListDatabase.child(currentUser.getUid()).child(userId).removeValue()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    friendListDatabase.child(userId).child(currentUser.getUid()).removeValue()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    currentState = NOT_FRIENDS;
-                                                    sendRequest.setText(R.string.send_request);
-                                                    sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
-                                                    sendRequest.setTextColor(Color.BLACK);
-                                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
-                                                    declineRequest.setEnabled(false);
-                                                    declineRequest.setVisibility(View.INVISIBLE);
-                                                }
-                                            });
-                                    sendRequest.setEnabled(true);
-                                    sendRequest.setVisibility(View.VISIBLE);
-                                }
-                            });
+                    Map requestMap = new HashMap();
+                    requestMap.put("friends/" + currentUser.getUid() + "/" + userId, null);
+                    requestMap.put("friends/" + userId + "/" + currentUser.getUid(), null);
+                    rootDatabase.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Toast.makeText(ProfileActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.e("Line 278", databaseError.getDetails());
+                            } else {
+                                currentState = NOT_FRIENDS;
+                                sendRequest.setText(R.string.send_request);
+                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                                sendRequest.setTextColor(Color.BLACK);
+                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                declineRequest.setEnabled(false);
+                                declineRequest.setVisibility(View.INVISIBLE);
+                            }
+                            sendRequest.setEnabled(true);
+                            sendRequest.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
             }
         });
@@ -304,26 +293,29 @@ public class ProfileActivity extends AppCompatActivity {
         declineRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                friendRequestDatabase.child(currentUser.getUid()).child(userId).removeValue()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                friendRequestDatabase.child(userId).child(currentUser.getUid()).removeValue()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Toast.makeText(ProfileActivity.this, "Friend Request Declined", Toast.LENGTH_SHORT).show();
-                                                currentState = NOT_FRIENDS;
-                                                sendRequest.setText(R.string.send_request);
-                                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
-                                                sendRequest.setTextColor(Color.BLACK);
-                                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
-                                                declineRequest.setEnabled(false);
-                                                declineRequest.setVisibility(View.INVISIBLE);
-                                            }
-                                        });
-                            }
-                        });
+                Map requestMap = new HashMap();
+                requestMap.put("friend_request/" + currentUser.getUid() + "/" + userId, null);
+                requestMap.put("friend_request/" + userId + "/" + currentUser.getUid(), null);
+                rootDatabase.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            Toast.makeText(ProfileActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("Line 308", databaseError.getDetails());
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Friend Request Declined", Toast.LENGTH_SHORT).show();
+                            currentState = NOT_FRIENDS;
+                            sendRequest.setText(R.string.send_request);
+                            sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                            sendRequest.setTextColor(Color.BLACK);
+                            sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                            declineRequest.setEnabled(false);
+                            declineRequest.setVisibility(View.INVISIBLE);
+                        }
+                        sendRequest.setEnabled(true);
+                        sendRequest.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
     }
