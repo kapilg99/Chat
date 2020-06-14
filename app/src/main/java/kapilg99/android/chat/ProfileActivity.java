@@ -224,13 +224,18 @@ public class ProfileActivity extends AppCompatActivity {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            currentState = NOT_FREINDS;
-                                            sendRequest.setText(R.string.send_request);
-                                            sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
-                                            sendRequest.setTextColor(Color.BLACK);
-                                            sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
-                                            declineRequest.setEnabled(false);
-                                            declineRequest.setVisibility(View.INVISIBLE);
+                                            notificationDatabase.child(userId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    currentState = NOT_FREINDS;
+                                                    sendRequest.setText(R.string.send_request);
+                                                    sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                                                    sendRequest.setTextColor(Color.BLACK);
+                                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                                    declineRequest.setEnabled(false);
+                                                    declineRequest.setVisibility(View.INVISIBLE);
+                                                }
+                                            });
                                         }
                                     });
                             sendRequest.setEnabled(true);
