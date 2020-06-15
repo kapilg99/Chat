@@ -238,8 +238,8 @@ public class ProfileActivity extends AppCompatActivity {
                 if (currentState.equals(REQUEST_RECEIVED)) {
                     final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
                     Map requestMap = new HashMap();
-                    requestMap.put("friends/" + currentUser.getUid() + "/" + userId, currentDate);
-                    requestMap.put("friends/" + userId + "/" + currentUser.getUid(), currentDate);
+                    requestMap.put("friends/" + currentUser.getUid() + "/" + userId + "/date", currentDate);
+                    requestMap.put("friends/" + userId + "/" + currentUser.getUid() + "/date", currentDate);
                     requestMap.put("friend_request/" + currentUser.getUid() + "/" + userId, null);
                     requestMap.put("friend_request/" + userId + "/" + currentUser.getUid(), null);
 
