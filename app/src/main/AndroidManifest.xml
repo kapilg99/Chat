@@ -16,9 +16,13 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ChatActivity"
+            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".ProfileActivity">
             <intent-filter>
                 <action android:name="kapilgg99.android.chat_TARGET_NOTIFICATION" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -53,8 +57,8 @@
 
         <service
             android:name=".FirebaseMessagingService"
-            android:exported="true"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

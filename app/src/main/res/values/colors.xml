@@ -9,4 +9,5 @@
     <color name="colorSecondaryText">#ffffff</color>
     <!--    757575-->
     <color name="colorDivider">#BDBDBD</color>
+    <color name="colorTheirMsg">#e0e0e0</color>
 </resources>

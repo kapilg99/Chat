@@ -1,5 +1,7 @@
 package kapilg99.android.chat;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,18 +80,43 @@ public class FriendsFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull final FriendsViewHolder holder, int position, @NonNull Friends friend) {
                 holder.setDate(friend.getDate());
-                String userId = getRef(position).getKey();
+                final String userId = getRef(position).getKey();
+                assert userId != null;
                 userDatabase.child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String userName = dataSnapshot.child("name").getValue().toString();
-                        String userThumbImage = dataSnapshot.child("thumb_image").getValue().toString();
+                        final String userName = Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString();
+                        final String userThumbImage = Objects.requireNonNull(dataSnapshot.child("thumb_image").getValue()).toString();
                         holder.setName(userName);
                         holder.setThumbImage(userThumbImage);
                         if (dataSnapshot.hasChild("online")) {
                             Boolean onlineStatus = (Boolean) dataSnapshot.child("online").getValue();
+                            assert onlineStatus != null;
                             holder.setUserOnline(onlineStatus);
                         }
+                        holder.view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CharSequence[] friendOptions = {"Send Message", "Open Profile"};
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setItems(friendOptions, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (which == 1) {
+                                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                            profileIntent.putExtra("userid", userId);
+                                            startActivity(profileIntent);
+                                        } else if (which == 0) {
+                                            Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                            chatIntent.putExtra("userid", userId);
+                                            chatIntent.putExtra("user_name", userName);
+                                            startActivity(chatIntent);
+                                        }
+                                    }
+                                });
+                                builder.show();
+                            }
+                        });
                     }
 
                     @Override

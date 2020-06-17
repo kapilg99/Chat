@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 
 public class StatusActivity extends AppCompatActivity {
@@ -78,6 +79,7 @@ public class StatusActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mDatabase.child("online").setValue(false);
+        mDatabase.child("last_seen").setValue(ServerValue.TIMESTAMP);
     }
 
     @Override

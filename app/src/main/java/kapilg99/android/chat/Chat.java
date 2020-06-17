@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -26,7 +27,24 @@ public class Chat extends Application {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        userDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
+        if (currentUser != null) {
+            userDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
+
+            userDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        userDatabase.child("online").onDisconnect().setValue(false);
+                        userDatabase.child("last_seen").onDisconnect().setValue(ServerValue.TIMESTAMP);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE));
@@ -35,18 +53,5 @@ public class Chat extends Application {
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
 
-        userDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    userDatabase.child("online").onDisconnect().setValue(false);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }

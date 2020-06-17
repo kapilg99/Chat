@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if (currentUser != null) {
             userDB.child(currentUser.getUid()).child("online").setValue(false);
+            userDB.child(currentUser.getUid()).child("last_seen").setValue(ServerValue.TIMESTAMP);
         }
     }
 

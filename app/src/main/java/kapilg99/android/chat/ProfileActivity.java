@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -30,6 +31,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -70,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         declineRequest = findViewById(R.id.profile_DeclineRequest);
         currentState = NOT_FRIENDS;
 
+        assert userId != null;
         userDB = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         userDB.keepSynced(true);
         friendRequestDatabase = FirebaseDatabase.getInstance().getReference().child("friend_request");
@@ -89,9 +92,9 @@ public class ProfileActivity extends AppCompatActivity {
         userDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.child("name").getValue().toString();
-                String status = dataSnapshot.child("status").getValue().toString();
-                final String image = dataSnapshot.child("image").getValue().toString();
+                String name = Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString();
+                String status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
+                final String image = Objects.requireNonNull(dataSnapshot.child("image").getValue()).toString();
 //                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
                 displayName.setText(name);
@@ -114,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(userId)) {
-                            String requestType = dataSnapshot.child(userId).child("request_type").getValue().toString();
+                            String requestType = Objects.requireNonNull(dataSnapshot.child(userId).child("request_type").getValue()).toString();
                             if (requestType.equals("received")) {
                                 currentState = REQUEST_RECEIVED;
                                 sendRequest.setText(R.string.accept_request);
@@ -205,7 +208,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 sendRequest.setText(R.string.cancel_request);
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                 sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
-                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                }
                                 declineRequest.setEnabled(false);
                                 declineRequest.setVisibility(View.INVISIBLE);
                             }
@@ -232,7 +237,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 sendRequest.setText(R.string.send_request);
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
                                 sendRequest.setTextColor(Color.BLACK);
-                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                }
                                 declineRequest.setEnabled(false);
                                 declineRequest.setVisibility(View.INVISIBLE);
                             }
@@ -261,7 +268,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 sendRequest.setText(R.string.unfriend);
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                 sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
-                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                }
                                 declineRequest.setEnabled(false);
                                 declineRequest.setVisibility(View.INVISIBLE);
                             }
@@ -285,7 +294,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 sendRequest.setText(R.string.send_request);
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
                                 sendRequest.setTextColor(Color.BLACK);
-                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                }
                                 declineRequest.setEnabled(false);
                                 declineRequest.setVisibility(View.INVISIBLE);
                             }
@@ -315,7 +326,9 @@ public class ProfileActivity extends AppCompatActivity {
                             sendRequest.setText(R.string.send_request);
                             sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
                             sendRequest.setTextColor(Color.BLACK);
-                            sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                            if (Build.VERSION.SDK_INT >= 21) {
+                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                            }
                             declineRequest.setEnabled(false);
                             declineRequest.setVisibility(View.INVISIBLE);
                         }
@@ -331,6 +344,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         rootDatabase.child("users").child(currentUser.getUid()).child("online").setValue(false);
+        rootDatabase.child("users").child(currentUser.getUid()).child("last_seen").setValue(ServerValue.TIMESTAMP);
     }
 
     @Override
