@@ -2,6 +2,7 @@ package kapilg99.android.chat;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,8 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference friendListDatabase;
     private DatabaseReference notificationDatabase;
     private DatabaseReference rootDatabase;
-
     FirebaseUser currentUser;
+
     private static final String NOT_FRIENDS = "not_friends";
     private static final String REQUEST_SENT = "request_sent";
     private static final String REQUEST_RECEIVED = "request_received";
@@ -118,7 +119,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 currentState = REQUEST_RECEIVED;
                                 sendRequest.setText(R.string.accept_request);
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
-                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                }
                                 sendRequest.setTextColor(Color.BLACK);
                                 declineRequest.setEnabled(true);
                                 declineRequest.setVisibility(View.VISIBLE);
@@ -127,7 +130,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 sendRequest.setText(R.string.cancel_request);
                                 sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                 sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
-                                sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                }
                                 declineRequest.setEnabled(false);
                                 declineRequest.setVisibility(View.INVISIBLE);
                             }
@@ -140,7 +145,9 @@ public class ProfileActivity extends AppCompatActivity {
                                         sendRequest.setText(R.string.unfriend);
                                         sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                         sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
-                                        sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                        if (Build.VERSION.SDK_INT >= 21) {
+                                            sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
+                                        }
                                         declineRequest.setEnabled(false);
                                         declineRequest.setVisibility(View.INVISIBLE);
                                     }
@@ -318,5 +325,17 @@ public class ProfileActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        rootDatabase.child("users").child(currentUser.getUid()).child("online").setValue(false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        rootDatabase.child("users").child(currentUser.getUid()).child("online").setValue(true);
     }
 }

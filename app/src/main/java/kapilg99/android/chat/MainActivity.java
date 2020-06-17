@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         userDB = FirebaseDatabase.getInstance().getReference().child("users");
+        currentUser = mAuth.getCurrentUser();
 
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
@@ -62,6 +63,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentUser == null) {
             sendToStart();
+        } else {
+            userDB.child(currentUser.getUid()).child("online").setValue(true);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (currentUser != null) {
+            userDB.child(currentUser.getUid()).child("online").setValue(false);
         }
     }
 

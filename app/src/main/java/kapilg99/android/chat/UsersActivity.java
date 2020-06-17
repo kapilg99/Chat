@@ -55,6 +55,8 @@ public class UsersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        userDatabase.child(currentUser.getUid()).child("online").setValue(true);
+
         FirebaseRecyclerOptions<Users> options =
                 new FirebaseRecyclerOptions.Builder<Users>()
                         .setQuery(userDatabase, Users.class)
@@ -99,6 +101,12 @@ public class UsersActivity extends AppCompatActivity {
         recyclerView.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        userDatabase.child(currentUser.getUid()).child("online").setValue(false);
     }
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {

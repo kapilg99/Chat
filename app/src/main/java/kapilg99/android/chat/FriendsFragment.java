@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,6 +85,10 @@ public class FriendsFragment extends Fragment {
                         String userThumbImage = dataSnapshot.child("thumb_image").getValue().toString();
                         holder.setName(userName);
                         holder.setThumbImage(userThumbImage);
+                        if (dataSnapshot.hasChild("online")) {
+                            Boolean onlineStatus = (Boolean) dataSnapshot.child("online").getValue();
+                            holder.setUserOnline(onlineStatus);
+                        }
                     }
 
                     @Override
@@ -122,6 +127,15 @@ public class FriendsFragment extends Fragment {
         public void setName(String userName) {
             TextView userDisplayName = view.findViewById(R.id.username);
             userDisplayName.setText(userName);
+        }
+
+        public void setUserOnline(Boolean online) {
+            ImageView userOnlineView = view.findViewById(R.id.online_status);
+            if (online) {
+                userOnlineView.setVisibility(View.VISIBLE);
+            } else {
+                userOnlineView.setVisibility(View.INVISIBLE);
+            }
         }
 
         public void setThumbImage(final String userThumbImage) {
