@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:weightSum="16"
@@ -20,25 +20,25 @@
         android:background="@drawable/rounded_corners">
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/chat_add_btn"
             android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:src="@drawable/ic_plus"
             android:layout_weight="1"
             android:padding="3dp"
             android:background="@color/colorSecondaryText" />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/chat_msg_body"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="14"
-            android:padding="3dp"
-            android:text="Message..." />
+            android:hint="Message..." />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/chat_send"
             android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:src="@drawable/ic_send_black"
             android:layout_weight="1"
             android:padding="3dp"
