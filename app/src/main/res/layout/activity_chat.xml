@@ -3,35 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatActivity"
-    android:background="@color/colorDivider">
+    android:background="@color/colorDivider"
+    tools:context=".ChatActivity">
 
     <include
-        layout="@layout/app_bar_layout"
-        android:id="@+id/chat_app_bar" />
+        android:id="@+id/chat_app_bar"
+        layout="@layout/app_bar_layout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messages_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chat_bottom_bar"
+        android:layout_below="@id/chat_app_bar" />
 
     <LinearLayout
+        android:id="@+id/chat_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="16"
         android:layout_margin="5dp"
-        android:background="@drawable/rounded_corners">
+        android:background="@drawable/rounded_corners"
+        android:orientation="horizontal"
+        android:weightSum="16">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/chat_add_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_plus"
             android:layout_weight="1"
+            android:background="@color/colorSecondaryText"
             android:padding="3dp"
-            android:background="@color/colorSecondaryText" />
+            android:src="@drawable/ic_plus" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/chat_msg_body"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="14"
             android:hint="Message..." />
 
@@ -39,10 +47,10 @@
             android:id="@+id/chat_send"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_send_black"
             android:layout_weight="1"
+            android:background="@color/colorSecondaryText"
             android:padding="3dp"
-            android:background="@color/colorSecondaryText" />
+            android:src="@drawable/ic_send_black" />
 
     </LinearLayout>
 

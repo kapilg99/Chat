@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayoutbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/appbarlayoutbar">
+        android:layout_height="wrap_content">
 
         <include
-            layout="@layout/app_bar_layout"
-            android:id="@+id/main_page_toolbar" />
+            android:id="@+id/main_page_toolbar"
+            layout="@layout/app_bar_layout" />
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/main_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/main_tabs"
             app:tabIndicatorHeight="3dp"></com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

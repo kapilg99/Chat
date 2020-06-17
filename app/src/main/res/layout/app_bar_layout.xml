@@ -7,6 +7,7 @@
     android:background="@color/colorPrimary"
     android:theme="@style/Widget.MaterialComponents.Toolbar"
     app:titleTextColor="@color/colorTextIcons"
-    app:titleMargin="13dp">
+    app:titleMargin="13dp"
+    app:layout_scrollFlags="noScroll">
 
 </androidx.appcompat.widget.Toolbar>

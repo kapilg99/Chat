@@ -16,11 +16,11 @@
         android:id="@+id/profile_displayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryText"
         android:layout_below="@+id/profile_displayPic"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:text="Profile Display Name"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="24sp" />
 
     <TextView
@@ -48,26 +48,26 @@
         android:id="@+id/profile_SendRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_totalFriends"
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
         android:background="@color/colorTextIcons"
-        android:layout_below="@+id/profile_totalFriends"
-        android:text="@string/send_request" />
+        android:padding="10dp"
+        android:text="@string/send_request"
+        android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/profile_DeclineRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_SendRequest"
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp"
-        android:padding="10dp"
-        android:textColor="@color/colorTextIcons"
         android:background="@color/colorAccent"
+        android:padding="10dp"
         android:shadowColor="@android:color/black"
-        android:layout_below="@+id/profile_SendRequest"
-        android:text="@string/decline_request" />
+        android:text="@string/decline_request"
+        android:textColor="@color/colorTextIcons" />
 
 
 </RelativeLayout>
