@@ -103,7 +103,6 @@ public class ProfileActivity extends AppCompatActivity {
                         .placeholder(R.drawable.avatar_default2).into(displayPic, new Callback() {
                     @Override
                     public void onSuccess() {
-
                     }
 
                     @Override
@@ -158,7 +157,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                                 }
                             });
                         }
@@ -167,14 +165,12 @@ public class ProfileActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
                     }
                 });
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 

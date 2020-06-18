@@ -41,7 +41,6 @@ public class Chat extends Application {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
         }

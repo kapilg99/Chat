@@ -96,7 +96,6 @@ public class SettingsActivity extends AppCompatActivity {
                         .placeholder(R.drawable.avatar_default2).into(avatar, new Callback() {
                     @Override
                     public void onSuccess() {
-
                     }
 
                     @Override
@@ -110,8 +109,8 @@ public class SettingsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
+
         });
 
         changeStatus.setOnClickListener(new View.OnClickListener() {

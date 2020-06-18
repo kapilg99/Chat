@@ -175,6 +175,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 sendMessage();
                 chat_msg_body.setText("");
+                messagesRecycler.scrollToPosition(messagesList.size() - 1);
             }
         });
     }

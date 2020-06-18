@@ -158,7 +158,6 @@ public class UsersActivity extends AppCompatActivity {
                     .into(thumbView, new Callback() {
                         @Override
                         public void onSuccess() {
-
                         }
 
                         @Override
