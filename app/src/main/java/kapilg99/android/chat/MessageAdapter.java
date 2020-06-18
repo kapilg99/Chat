@@ -6,9 +6,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -49,7 +51,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         jdf.setTimeZone(TimeZone.getDefault());
         String timeOfText = jdf.format(time);
         holder.timestamp.setText(timeOfText);
-        holder.messageBody.setText(message.getMessage());
+        switch (message.getType()) {
+            case "text":
+                holder.messageBody.setText(message.getMessage());
+                holder.messageBody.setVisibility(View.VISIBLE);
+//                holder.messageImage.setVisibility(View.INVISIBLE);
+                holder.messageImage.setVisibility(View.GONE);
+                break;
+
+            case "image":
+//                holder.messageBody.setVisibility(View.INVISIBLE);
+                holder.messageBody.setVisibility(View.GONE);
+                holder.messageImage.setVisibility(View.VISIBLE);
+                Picasso.get().load(message.getMessage())
+                        .placeholder(R.drawable.ic_photo_128)
+                        .into(holder.messageImage);
+                break;
+        }
     }
 
     @Override
@@ -73,11 +91,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         TextView messageBody;
         TextView timestamp;
+        AppCompatImageView messageImage;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             messageBody = itemView.findViewById(R.id.message_body);
             timestamp = itemView.findViewById(R.id.timestamp);
+            messageImage = itemView.findViewById(R.id.message_image);
         }
     }
 }

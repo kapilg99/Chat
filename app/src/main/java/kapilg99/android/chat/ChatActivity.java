@@ -1,6 +1,8 @@
 package kapilg99.android.chat;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -29,6 +34,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -42,9 +50,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
 
+    private static final int GALLERY_PICK = 1;
     private DatabaseReference rootDatabase;
     private FirebaseAuth mAuth;
     private String currentUserId;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+
 
     private Toolbar chatToolbar;
     private TextView userNameView;
@@ -63,7 +75,6 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
 
     private static final int MESSAGES_TO_LOAD = 20;
-    private int currentPage = 1;
     private int itemPosition = 0;
     private String lastMessageKey;
     private String lastPrevMessageKey;
@@ -76,6 +87,8 @@ public class ChatActivity extends AppCompatActivity {
         rootDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
 
         userId = getIntent().getStringExtra("userid");
         userName = getIntent().getStringExtra("user_name");
@@ -188,14 +201,85 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        chat_addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setType("image/*");
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(galleryIntent, "Select Image"), GALLERY_PICK);
+            }
+        });
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                currentPage++;
                 itemPosition = 0;
                 loadMoreMessages();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+            DatabaseReference userMsgPush = rootDatabase.child("messages")
+                    .child(currentUserId).child(userId).push();
+            final String pushId = userMsgPush.getKey();
+            final String currentUserRef = "messages/" + currentUserId + "/" + userId + "/" + pushId;
+            final String otherUserRef = "messages/" + userId + "/" + currentUserId + "/" + pushId;
+            Toast.makeText(this, pushId, Toast.LENGTH_SHORT).show();
+            final StorageReference filePath = storageRef.child("message_images").child(pushId + ".jpg");
+            UploadTask uploadTask = filePath.putFile(imageUri);
+            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(ChatActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        throw task.getException();
+                    }
+                    return filePath.getDownloadUrl();
+                }
+            })
+                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+                                Toast.makeText(ChatActivity.this, downloadUri.toString(), Toast.LENGTH_SHORT).show();
+                                Map messageMap = new HashMap();
+                                messageMap.put("message", downloadUri.toString());
+                                messageMap.put("seen", false);
+                                messageMap.put("type", "image");
+                                messageMap.put("time", ServerValue.TIMESTAMP);
+                                messageMap.put("from", currentUserId);
+
+                                Map msgUserMap = new HashMap();
+                                msgUserMap.put(currentUserRef, messageMap);
+                                msgUserMap.put(otherUserRef, messageMap);
+
+                                rootDatabase.updateChildren(msgUserMap, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                        if (databaseError != null) {
+                                            Toast.makeText(ChatActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Log.e("TAG", databaseError.getDetails());
+                                        }
+                                    }
+                                });
+
+                                chat_msg_body.setText("");
+
+                                messagesRecycler.scrollToPosition(messagesList.size() - 1);
+                            } else {
+                                Log.e("Upload link to database", task.getException().getMessage());
+                            }
+                        }
+                    });
+        }
     }
 
     private void loadMoreMessages() {
