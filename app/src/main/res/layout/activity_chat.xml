@@ -10,12 +10,20 @@
         android:id="@+id/chat_app_bar"
         layout="@layout/app_bar_layout" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messages_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/chat_bottom_bar"
-        android:layout_below="@id/chat_app_bar" />
+        android:layout_below="@id/chat_app_bar"
+        android:scrollbars="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messages_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/chat_bottom_bar"
