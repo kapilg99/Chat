@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             sendToStart();
         } else {
             userDB.child(currentUser.getUid()).child("online").setValue(true);
+            userDB.child(currentUser.getUid()).keepSynced(true);
         }
     }
 
