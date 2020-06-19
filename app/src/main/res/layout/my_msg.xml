@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:id="@+id/outerRelativeLayout"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="60dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/my_msg"
     android:clipToPadding="false"
-    android:paddingVertical="3dp"
-    android:paddingLeft="60dp"
-    android:paddingRight="7dp">
+    android:elevation="2dp"
+    android:paddingHorizontal="7dp"
+    android:paddingVertical="3dp">
 
-    <RelativeLayout
-        android:id="@+id/msgBody"
+    <TextView
+        android:id="@+id/message_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/my_msg"
+        android:autoLink="web"
+        android:breakStrategy="high_quality"
+        android:linksClickable="true"
+        android:maxWidth="250dp"
+        android:paddingHorizontal="10dp"
+        android:text="Placeholder Text"
+        android:textColor="@color/colorTextIcons"
+        android:textSize="18sp" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/message_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message_body"
+        android:layout_alignStart="@id/message_body"
+        android:layout_alignEnd="@id/message_body"
+        android:layout_toEndOf="@id/message_body"
         android:elevation="2dp"
-        android:paddingHorizontal="7dp"
-        android:paddingVertical="7dp">
-
-        <TextView
-            android:id="@+id/message_body"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="10dp"
-            android:text="Placeholder Text"
-            android:textColor="@color/colorTextIcons"
-            android:textSize="18dp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/message_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/message_body"
-            android:layout_alignStart="@id/message_body"
-            android:layout_alignEnd="@id/message_body"
-            android:layout_toEndOf="@id/message_body"
-            android:elevation="2dp"
-            android:scaleType="centerInside" />
-
-    </RelativeLayout>
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/msgBody"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/msgBody"
-        android:text="Placeholder date" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="5dp"
+        android:text="PlaceHolderdate"
+        android:textColor="@color/colorTheirMsg" />
 
 </RelativeLayout>

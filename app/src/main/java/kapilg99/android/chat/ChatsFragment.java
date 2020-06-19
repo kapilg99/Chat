@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -101,7 +102,11 @@ public class ChatsFragment extends Fragment {
                         if (lastMessage.matches(".*message_images.*")) {
                             holder.setMessage("Image", conversation.isSeen());
                         } else {
-                            holder.setMessage(lastMessage, conversation.isSeen());
+                            if (lastMessage.length() > 30) {
+                                holder.setMessage(lastMessage.substring(0, 29) + "...", conversation.isSeen());
+                            } else {
+                                holder.setMessage(lastMessage, conversation.isSeen());
+                            }
                         }
                     }
 
@@ -168,6 +173,10 @@ public class ChatsFragment extends Fragment {
 
     private class ConvViewHolder extends RecyclerView.ViewHolder {
         View view;
+        TextView userName;
+        TextView userMessage;
+        CircleImageView thumbView;
+        ImageView userRead;
 
         public ConvViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -175,23 +184,28 @@ public class ChatsFragment extends Fragment {
         }
 
         public void setMessage(String message, boolean seen) {
-            TextView userMessage = view.findViewById(R.id.userstatus);
+            userMessage = view.findViewById(R.id.userstatus);
             userMessage.setText(message);
+
+            userRead = view.findViewById(R.id.online_status);
 
             if (seen) {
                 userMessage.setTypeface(userMessage.getTypeface(), Typeface.NORMAL);
+                userRead.setVisibility(View.GONE);
             } else {
                 userMessage.setTypeface(userMessage.getTypeface(), Typeface.BOLD);
+                userRead.setImageResource(R.drawable.circle);
+                userRead.setVisibility(View.VISIBLE);
             }
         }
 
         public void setName(String username) {
-            TextView userName = view.findViewById(R.id.username);
+            userName = view.findViewById(R.id.username);
             userName.setText(username);
         }
 
         public void setThumb(final String userThumb) {
-            final CircleImageView thumbView = view.findViewById(R.id.user_avatar);
+            thumbView = view.findViewById(R.id.user_avatar);
             Picasso.get().load(userThumb)
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.drawable.avatar_default2)

@@ -366,16 +366,23 @@ public class ChatActivity extends AppCompatActivity {
             String currentUserRef = "messages/" + currentUserId + "/" + userId + "/" + pushId;
             String otherUserRef = "messages/" + userId + "/" + currentUserId + "/" + pushId;
 
-            Map messageMap = new HashMap();
-            messageMap.put("message", message);
-            messageMap.put("seen", false);
-            messageMap.put("type", "text");
-            messageMap.put("time", ServerValue.TIMESTAMP);
-            messageMap.put("from", currentUserId);
+            Map otherUserMessageMap = new HashMap();
+            otherUserMessageMap.put("message", message);
+            otherUserMessageMap.put("seen", false);
+            otherUserMessageMap.put("type", "text");
+            otherUserMessageMap.put("time", ServerValue.TIMESTAMP);
+            otherUserMessageMap.put("from", currentUserId);
+
+            Map currentUserMessageMap = new HashMap();
+            currentUserMessageMap.put("message", message);
+            currentUserMessageMap.put("seen", true);
+            currentUserMessageMap.put("type", "text");
+            currentUserMessageMap.put("time", ServerValue.TIMESTAMP);
+            currentUserMessageMap.put("from", currentUserId);
 
             Map mapUserMessage = new HashMap();
-            mapUserMessage.put(currentUserRef, messageMap);
-            mapUserMessage.put(otherUserRef, messageMap);
+            mapUserMessage.put(currentUserRef, currentUserMessageMap);
+            mapUserMessage.put(otherUserRef, otherUserMessageMap);
 
             rootDatabase.updateChildren(mapUserMessage, new DatabaseReference.CompletionListener() {
                 @Override

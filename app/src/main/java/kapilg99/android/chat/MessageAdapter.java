@@ -3,6 +3,7 @@ package kapilg99.android.chat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,11 +35,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         if (viewType == 1) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.my_msg, parent, false);
+            return new MessageViewHolder(view, "left");
         } else {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.their_msg, parent, false);
+            return new MessageViewHolder(view, "right");
         }
-        return new MessageViewHolder(view);
+
     }
 
     @Override
@@ -47,7 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         Messages message = messagesList.get(position);
         long time = message.getTime();
-        SimpleDateFormat jdf = new SimpleDateFormat("dd-MM-yy h:mm a");
+        SimpleDateFormat jdf = new SimpleDateFormat("dd-MM-yy H:mm");
         jdf.setTimeZone(TimeZone.getDefault());
         String timeOfText = jdf.format(time);
         holder.timestamp.setText(timeOfText);
@@ -55,17 +58,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             case "text":
                 holder.messageBody.setText(message.getMessage());
                 holder.messageBody.setVisibility(View.VISIBLE);
-//                holder.messageImage.setVisibility(View.INVISIBLE);
                 holder.messageImage.setVisibility(View.GONE);
+                ((RelativeLayout.LayoutParams) holder.timestamp.getLayoutParams()).addRule(RelativeLayout.BELOW, holder.messageBody.getId());
                 break;
 
             case "image":
-//                holder.messageBody.setVisibility(View.INVISIBLE);
                 holder.messageBody.setVisibility(View.GONE);
                 holder.messageImage.setVisibility(View.VISIBLE);
                 Picasso.get().load(message.getMessage())
                         .placeholder(R.drawable.ic_photo_128)
                         .into(holder.messageImage);
+
+                ((RelativeLayout.LayoutParams) holder.timestamp.getLayoutParams()).addRule(RelativeLayout.BELOW, holder.messageImage.getId());
                 break;
         }
     }
@@ -93,7 +97,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         TextView timestamp;
         AppCompatImageView messageImage;
 
-        public MessageViewHolder(@NonNull View itemView) {
+        public MessageViewHolder(@NonNull View itemView, String paddingDirection) {
             super(itemView);
             messageBody = itemView.findViewById(R.id.message_body);
             timestamp = itemView.findViewById(R.id.timestamp);

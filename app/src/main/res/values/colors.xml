@@ -10,4 +10,5 @@
     <!--    757575-->
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorTheirMsg">#e0e0e0</color>
+    <color name="colorTheirMsgTime">#757575</color>
 </resources>
