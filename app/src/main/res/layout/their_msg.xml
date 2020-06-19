@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="web"
+        android:textColorLink="@color/colorPrimaryText"
         android:breakStrategy="high_quality"
         android:linksClickable="true"
         android:maxWidth="250dp"

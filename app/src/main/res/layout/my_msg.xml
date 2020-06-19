@@ -24,6 +24,7 @@
         android:paddingHorizontal="10dp"
         android:text="Placeholder Text"
         android:textColor="@color/colorTextIcons"
+        android:textColorLink="@color/colorTextIcons"
         android:textSize="18sp" />
 
 
