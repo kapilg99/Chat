@@ -3,6 +3,7 @@ package kapilg99.android.chat;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,10 +103,11 @@ public class ChatsFragment extends Fragment {
                         if (lastMessage.matches(".*message_images.*")) {
                             holder.setMessage("Image", conversation.isSeen());
                         } else {
-                            if (lastMessage.length() > 30) {
-                                holder.setMessage(lastMessage.substring(0, 29) + "...", conversation.isSeen());
+                            Log.e("TAG", lastMessage.replaceAll("\\s", " "));
+                            if (lastMessage.replaceAll("\\s", " ").length() > 30) {
+                                holder.setMessage(lastMessage.replaceAll("\\s", " ").substring(0, 29) + "...", conversation.isSeen());
                             } else {
-                                holder.setMessage(lastMessage, conversation.isSeen());
+                                holder.setMessage(lastMessage.replaceAll("\\s", " "), conversation.isSeen());
                             }
                         }
                     }
