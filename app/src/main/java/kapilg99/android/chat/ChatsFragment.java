@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -158,8 +159,9 @@ public class ChatsFragment extends Fragment {
                         conversation.setSeen(true);
                         startActivity(chatIntent);
                         final DatabaseReference messageReference =
-                                convDatabase.child(userId).child("seen");
-                        messageReference.setValue(true);
+                                convDatabase.child(userId);
+                        messageReference.child("seen").setValue(true);
+                        messageReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
                     }
                 });
             }
