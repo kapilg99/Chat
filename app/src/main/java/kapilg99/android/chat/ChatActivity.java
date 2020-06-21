@@ -283,12 +283,15 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadMoreMessages() {
-        DatabaseReference messageReference = rootDatabase.child("messages").child(currentUserId).child(userId);
+        final DatabaseReference messageReference = rootDatabase.child("messages").child(currentUserId).child(userId);
         Query messageQuery = messageReference.orderByKey().endAt(lastMessageKey).limitToLast(MESSAGES_TO_LOAD);
         messageQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Messages message = dataSnapshot.getValue(Messages.class);
+                if (!message.getSeen()) {
+                    messageReference.child(dataSnapshot.getKey()).child("seen").setValue(true);
+                }
                 if (!lastPrevMessageKey.equals(dataSnapshot.getKey())) {
                     messagesList.add(itemPosition, message);
                     itemPosition++;
@@ -321,12 +324,15 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadMessages() {
-        DatabaseReference messageReference = rootDatabase.child("messages").child(currentUserId).child(userId);
+        final DatabaseReference messageReference = rootDatabase.child("messages").child(currentUserId).child(userId);
         Query messageQuery = messageReference.limitToLast(MESSAGES_TO_LOAD);
         messageQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Messages message = dataSnapshot.getValue(Messages.class);
+                if (!message.getSeen()) {
+                    messageReference.child(dataSnapshot.getKey()).child("seen").setValue(true);
+                }
                 messagesList.add(itemPosition, message);
                 itemPosition++;
                 messageAdapter.notifyDataSetChanged();

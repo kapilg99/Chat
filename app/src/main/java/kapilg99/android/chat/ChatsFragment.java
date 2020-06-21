@@ -105,7 +105,8 @@ public class ChatsFragment extends Fragment {
                         } else {
                             Log.e("TAG", lastMessage.replaceAll("\\s", " "));
                             if (lastMessage.replaceAll("\\s", " ").length() > 30) {
-                                holder.setMessage(lastMessage.replaceAll("\\s", " ").substring(0, 29) + "...", conversation.isSeen());
+                                holder.setMessage(lastMessage.replaceAll("\\s", " ").substring(0, 29) + "...",
+                                        conversation.isSeen());
                             } else {
                                 holder.setMessage(lastMessage.replaceAll("\\s", " "), conversation.isSeen());
                             }
@@ -156,6 +157,9 @@ public class ChatsFragment extends Fragment {
                         chatIntent.putExtra("user_name", userName[0]);
                         conversation.setSeen(true);
                         startActivity(chatIntent);
+                        final DatabaseReference messageReference =
+                                convDatabase.child(userId).child("seen");
+                        messageReference.setValue(true);
                     }
                 });
             }
