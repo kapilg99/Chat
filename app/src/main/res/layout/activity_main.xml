@@ -17,7 +17,7 @@
             android:id="@+id/main_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorHeight="3dp"></com.google.android.material.tabs.TabLayout>
+            app:tabIndicatorHeight="3dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -25,7 +25,7 @@
         android:id="@+id/main_tabPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/appbarlayoutbar"></androidx.viewpager.widget.ViewPager>
+        android:layout_below="@+id/appbarlayoutbar" />
 
 
 </RelativeLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +10,7 @@
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        app:srcCompat="@drawable/avatar_default2" />
+        tools:src="@drawable/avatar_default2" />
 
     <TextView
         android:id="@+id/profile_displayName"
@@ -19,9 +19,9 @@
         android:layout_below="@+id/profile_displayPic"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:text="Profile Display Name"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        tools:text="Profile Display Name" />
 
     <TextView
         android:id="@+id/profile_displayStatus"
@@ -30,8 +30,8 @@
         android:layout_below="@+id/profile_displayName"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:text="Profile Status"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:text="Profile Status" />
 
     <TextView
         android:id="@+id/profile_totalFriends"
@@ -41,8 +41,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="10dp"
-        android:text="Total Friends :"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:text="Total Friends :" />
 
     <Button
         android:id="@+id/profile_SendRequest"

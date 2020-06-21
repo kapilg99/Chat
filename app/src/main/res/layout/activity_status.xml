@@ -9,7 +9,7 @@
         android:id="@+id/appbar_status"
         layout="@layout/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></include>
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/statuslayout"

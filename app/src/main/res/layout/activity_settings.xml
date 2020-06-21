@@ -9,7 +9,7 @@
         android:id="@+id/appbar_settings"
         layout="@layout/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></include>
+        android:layout_height="wrap_content" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/settings_default_avatar"
@@ -17,7 +17,7 @@
         android:layout_height="124dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:src="@drawable/avatar_default2" />
+        tools:src="@drawable/avatar_default2" />
 
     <TextView
         android:id="@+id/displayname"
@@ -26,8 +26,8 @@
         android:layout_below="@id/settings_default_avatar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="Display Name"
-        android:textColor="@color/colorPrimaryText" />
+        android:textColor="@color/colorPrimaryText"
+        tools:text="Display Name" />
 
     <TextView
         android:id="@+id/status"
@@ -36,8 +36,8 @@
         android:layout_below="@id/displayname"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="Status"
-        android:textColor="@color/colorPrimaryText" />
+        android:textColor="@color/colorPrimaryText"
+        tools:text="Status" />
 
     <Button
         android:id="@+id/changeImage"
@@ -48,7 +48,7 @@
         android:layout_marginTop="50dp"
         android:background="@color/colorPrimaryDark"
         android:padding="15dp"
-        android:text="Change Image"
+        android:text="@string/change_profile_image"
         android:textColor="@color/colorTextIcons" />
 
     <Button
@@ -60,7 +60,7 @@
         android:layout_marginTop="30dp"
         android:background="@color/colorPrimaryDark"
         android:padding="15dp"
-        android:text="Change Status"
+        android:text="@string/change_status"
         android:textColor="@color/colorTextIcons" />
 
 </RelativeLayout>

@@ -41,4 +41,6 @@
     <string name="invite">Invite</string>
     <string name="invite_text">I\'m inviting you to try Chat!</string>
     <string name="invite_link">Link</string>
+    <string name="change_profile_image">Change Image</string>
+    <string name="change_status">Change Status</string>
 </resources>

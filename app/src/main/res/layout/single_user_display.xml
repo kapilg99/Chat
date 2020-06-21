@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp">
@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="15dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/avatar_default2" />
+        tools:src="@drawable/avatar_default2" />
 
     <TextView
         android:id="@+id/username"
@@ -20,11 +20,11 @@
         android:layout_marginStart="15dp"
         android:layout_marginBottom="6dp"
         android:layout_toEndOf="@id/user_avatar"
-        android:text="User Name"
         android:textColor="@android:color/black"
         android:textIsSelectable="false"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="User Name" />
 
     <ImageView
         android:id="@+id/online_status"
@@ -35,7 +35,7 @@
         android:layout_marginBottom="6dp"
         android:layout_toRightOf="@+id/username"
         android:visibility="invisible"
-        app:srcCompat="@android:drawable/presence_online" />
+        tools:srcCompat="@android:drawable/presence_online" />
 
     <TextView
         android:id="@+id/userstatus"
@@ -44,6 +44,6 @@
         android:layout_below="@id/username"
         android:layout_marginStart="15dp"
         android:layout_toEndOf="@id/user_avatar"
-        android:text="User Status" />
+        tools:text="User Status" />
 
 </RelativeLayout>
