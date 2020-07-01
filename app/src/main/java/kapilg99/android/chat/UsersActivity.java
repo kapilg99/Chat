@@ -69,12 +69,18 @@ public class UsersActivity extends AppCompatActivity {
                     public UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         View view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.single_user_display, parent, false);
+
                         return new UsersViewHolder(view);
                     }
 
                     @Override
                     protected void onBindViewHolder(@NonNull UsersViewHolder holder, int position, @NonNull Users user) {
-                        if (currentUser.getUid().equals(getRef(position).getKey())) {
+                        if (getItemViewType(position) == 0) {
+                            ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+                            params.height = 0;
+//                            params.width=0;
+                            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                            holder.view.setVisibility(View.GONE);
                             return;
                         }
                         holder.setName(user.getName());
@@ -97,6 +103,14 @@ public class UsersActivity extends AppCompatActivity {
                     @Override
                     public void onDataChanged() {
                         super.onDataChanged();
+                    }
+
+                    @Override
+                    public int getItemViewType(int position) {
+                        if (currentUser.getUid().equals(getRef(position).getKey())) {
+                            return 0;
+                        } else
+                            return 1;
                     }
                 };
         recyclerView.setAdapter(firebaseRecyclerAdapter);
