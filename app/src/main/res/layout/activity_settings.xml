@@ -27,6 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:textColor="@color/colorPrimaryText"
+        android:textSize="20sp"
         tools:text="Display Name" />
 
     <TextView
@@ -35,9 +36,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/displayname"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/colorPrimaryText"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorTheirMsgTime"
         tools:text="Status" />
+
+    <TextView
+        android:id="@+id/settings_divider_view"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@id/status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDivider" />
 
     <Button
         android:id="@+id/changeImage"
@@ -45,8 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/status"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/settings_rounded_buttons"
         android:padding="15dp"
         android:text="@string/change_profile_image"
         android:textColor="@color/colorTextIcons" />
@@ -58,7 +68,7 @@
         android:layout_below="@id/changeImage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/settings_rounded_buttons"
         android:padding="15dp"
         android:text="@string/change_status"
         android:textColor="@color/colorTextIcons" />

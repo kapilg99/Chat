@@ -26,15 +26,17 @@
         android:textColor="@color/colorSecondaryText"
         android:textSize="18sp"
         android:textStyle="bold"
-        tools:text="Default UserName" />
+        tools:text="Username" />
+    <!--    TODO: 28-07-2020 : Overlap possible -->
+    <!--    Warning:(19, 6) `@id/chat_bar_user_name` can overlap `@id/chat_bar_avatar` if @id/chat_bar_user_name grows due to localized text expansion-->
 
     <TextView
         android:id="@+id/chat_bar_last_seen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/chat_bar_user_name"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="6dp"
         android:textColor="@color/colorSecondaryText"
         tools:text="Last Seen" />
 

@@ -117,6 +117,9 @@ public class ChatActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         messagesRecycler.setAdapter(messageAdapter);
         messagesRecycler.setHasFixedSize(true);
+        messagesRecycler.setItemViewCacheSize(20);
+        messagesRecycler.setDrawingCacheEnabled(true);
+        messagesRecycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         messagesRecycler.setLayoutManager(linearLayoutManager);
 
         loadMessages();
@@ -386,9 +389,20 @@ public class ChatActivity extends AppCompatActivity {
             currentUserMessageMap.put("time", ServerValue.TIMESTAMP);
             currentUserMessageMap.put("from", currentUserId);
 
+            String convCurrentUserRef = "chat/" + currentUserId + "/" + userId;
+            String convOtherUserRef = "chat/" + userId + "/" + currentUserId;
+            Map conversationMap = new HashMap();
+            conversationMap.put("seen", true);
+            conversationMap.put("timestamp", ServerValue.TIMESTAMP);
+            Map conversationUserMap = new HashMap();
+            conversationUserMap.put("seen", false);
+            conversationUserMap.put("timestamp", ServerValue.TIMESTAMP);
+
             Map mapUserMessage = new HashMap();
             mapUserMessage.put(currentUserRef, currentUserMessageMap);
             mapUserMessage.put(otherUserRef, otherUserMessageMap);
+            mapUserMessage.put(convCurrentUserRef, conversationMap);
+            mapUserMessage.put(convOtherUserRef, conversationUserMap);
 
             rootDatabase.updateChildren(mapUserMessage, new DatabaseReference.CompletionListener() {
                 @Override

@@ -158,10 +158,10 @@ public class ChatsFragment extends Fragment {
                         chatIntent.putExtra("user_name", userName[0]);
                         conversation.setSeen(true);
                         startActivity(chatIntent);
-                        final DatabaseReference messageReference =
+                        final DatabaseReference currentUserMessageReference =
                                 convDatabase.child(userId);
-                        messageReference.child("seen").setValue(true);
-                        messageReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                        currentUserMessageReference.child("seen").setValue(true);
+                        currentUserMessageReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
                     }
                 });
             }
