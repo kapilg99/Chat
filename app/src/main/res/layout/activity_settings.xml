@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,66 +12,87 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/settings_default_avatar"
-        android:layout_width="124dp"
-        android:layout_height="124dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        tools:src="@drawable/avatar_default2" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appbar_settings"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="15dp"
+        android:foregroundGravity="center"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:contentPadding="20dp">
 
-    <TextView
-        android:id="@+id/displayname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/settings_default_avatar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="20sp"
-        tools:text="Display Name" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/displayname"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/colorTheirMsgTime"
-        tools:text="Status" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/settings_default_avatar"
+                android:layout_width="124dp"
+                android:layout_height="124dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                tools:src="@drawable/avatar_default2" />
 
-    <TextView
-        android:id="@+id/settings_divider_view"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_below="@id/status"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorDivider" />
+            <TextView
+                android:id="@+id/displayname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_default_avatar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                tools:text="Display Name" />
 
-    <Button
-        android:id="@+id/changeImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/status"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/settings_rounded_buttons"
-        android:padding="15dp"
-        android:text="@string/change_profile_image"
-        android:textColor="@color/colorTextIcons" />
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/displayname"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorTheirMsgTime"
+                tools:text="Status" />
 
-    <Button
-        android:id="@+id/changeStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/changeImage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/settings_rounded_buttons"
-        android:padding="15dp"
-        android:text="@string/change_status"
-        android:textColor="@color/colorTextIcons" />
+
+            <!--    <TextView-->
+            <!--        android:id="@+id/settings_divider_view"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="1dp"-->
+            <!--        android:layout_below="@id/status"-->
+            <!--        android:layout_centerHorizontal="true"-->
+            <!--        android:layout_marginTop="10dp"-->
+            <!--        android:background="@color/colorDivider" />-->
+
+            <Button
+                android:id="@+id/changeImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/status"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/settings_rounded_buttons"
+                android:padding="15dp"
+                android:text="@string/change_profile_image"
+                android:textColor="@color/colorTextIcons" />
+
+            <Button
+                android:id="@+id/changeStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/changeImage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/settings_rounded_buttons"
+                android:padding="15dp"
+                android:text="@string/change_status"
+                android:textColor="@color/colorTextIcons" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

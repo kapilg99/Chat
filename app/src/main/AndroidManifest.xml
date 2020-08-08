@@ -18,11 +18,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ChatActivity"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".ProfileActivity">
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="kapilgg99.android.chat_TARGET_NOTIFICATION" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

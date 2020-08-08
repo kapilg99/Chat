@@ -31,7 +31,7 @@
         android:layout_below="@id/statuslayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/settings_rounded_buttons"
         android:padding="15dp"
         android:text="@string/set_status"
         android:textColor="@color/colorTextIcons" />

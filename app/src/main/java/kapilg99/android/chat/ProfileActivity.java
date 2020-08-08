@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,11 +38,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView displayName;
     private TextView displayStatus;
-    private TextView displayTotalFriends;
+    //    private TextView displayTotalFriends;
     private ImageView displayPic;
     private Button sendRequest;
     private Button declineRequest;
     private String currentState;
+    private Toolbar mToolbar;
 
     private DatabaseReference userDB;
     private DatabaseReference friendRequestDatabase;
@@ -66,10 +68,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         displayName = findViewById(R.id.profile_displayName);
         displayStatus = findViewById(R.id.profile_displayStatus);
-        displayTotalFriends = findViewById(R.id.profile_totalFriends);
+//        displayTotalFriends = findViewById(R.id.profile_totalFriends);
         displayPic = findViewById(R.id.profile_displayPic);
         sendRequest = findViewById(R.id.profile_SendRequest);
         declineRequest = findViewById(R.id.profile_DeclineRequest);
+        mToolbar = findViewById(R.id.appbar_profile);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Profile");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         currentState = NOT_FRIENDS;
 
         assert userId != null;
@@ -120,7 +127,8 @@ public class ProfileActivity extends AppCompatActivity {
                             if (requestType.equals("received")) {
                                 currentState = REQUEST_RECEIVED;
                                 sendRequest.setText(R.string.accept_request);
-                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+//                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.rounded_corners));
                                 if (Build.VERSION.SDK_INT >= 21) {
                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
                                 }
@@ -130,7 +138,8 @@ public class ProfileActivity extends AppCompatActivity {
                             } else if (requestType.equals("sent")) {
                                 currentState = REQUEST_SENT;
                                 sendRequest.setText(R.string.cancel_request);
-                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+//                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.accent_rounded_corners));
                                 sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                 if (Build.VERSION.SDK_INT >= 21) {
                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
@@ -145,7 +154,8 @@ public class ProfileActivity extends AppCompatActivity {
                                     if (dataSnapshot.hasChild(userId)) {
                                         currentState = FRIENDS;
                                         sendRequest.setText(R.string.unfriend);
-                                        sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+//                                        sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                        sendRequest.setBackground(getResources().getDrawable(R.drawable.accent_rounded_corners));
                                         sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                         if (Build.VERSION.SDK_INT >= 21) {
                                             sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
@@ -202,7 +212,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 Toast.makeText(ProfileActivity.this, "Friend Request Sent", Toast.LENGTH_SHORT).show();
                                 currentState = REQUEST_SENT;
                                 sendRequest.setText(R.string.cancel_request);
-                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+//                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.accent_rounded_corners));
                                 sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                 if (Build.VERSION.SDK_INT >= 21) {
                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
@@ -231,7 +242,8 @@ public class ProfileActivity extends AppCompatActivity {
                             } else {
                                 currentState = NOT_FRIENDS;
                                 sendRequest.setText(R.string.send_request);
-                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+//                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.rounded_corners));
                                 sendRequest.setTextColor(Color.BLACK);
                                 if (Build.VERSION.SDK_INT >= 21) {
                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
@@ -262,7 +274,8 @@ public class ProfileActivity extends AppCompatActivity {
                                 Toast.makeText(ProfileActivity.this, "Request Accepted", Toast.LENGTH_SHORT).show();
                                 currentState = FRIENDS;
                                 sendRequest.setText(R.string.unfriend);
-                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+//                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.accent_rounded_corners));
                                 sendRequest.setTextColor(getResources().getColor(R.color.colorTextIcons));
                                 if (Build.VERSION.SDK_INT >= 21) {
                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
@@ -288,7 +301,8 @@ public class ProfileActivity extends AppCompatActivity {
                             } else {
                                 currentState = NOT_FRIENDS;
                                 sendRequest.setText(R.string.send_request);
-                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+//                                sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                                sendRequest.setBackground(getResources().getDrawable(R.drawable.rounded_corners));
                                 sendRequest.setTextColor(Color.BLACK);
                                 if (Build.VERSION.SDK_INT >= 21) {
                                     sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);
@@ -320,7 +334,8 @@ public class ProfileActivity extends AppCompatActivity {
                             Toast.makeText(ProfileActivity.this, "Friend Request Declined", Toast.LENGTH_SHORT).show();
                             currentState = NOT_FRIENDS;
                             sendRequest.setText(R.string.send_request);
-                            sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+//                            sendRequest.setBackgroundColor(getResources().getColor(R.color.colorTextIcons));
+                            sendRequest.setBackground(getResources().getDrawable(R.drawable.rounded_corners));
                             sendRequest.setTextColor(Color.BLACK);
                             if (Build.VERSION.SDK_INT >= 21) {
                                 sendRequest.setElevation(3 * getResources().getDisplayMetrics().density);

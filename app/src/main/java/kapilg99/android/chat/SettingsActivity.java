@@ -69,19 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
         avatar = findViewById(R.id.settings_default_avatar);
         mDisplayName = findViewById(R.id.displayname);
         mStatus = findViewById(R.id.status);
-// TODO: 28-07-2020 : divider between status and buttons
-
-//        dividerView = findViewById(R.id.settings_divider_view);
-//        ViewGroup.LayoutParams params =  dividerView.getLayoutParams();
-//        dividerView.setLayoutParams(params);
-//        if(mDisplayName.getWidth() > mStatus.getWidth()){
-//          dividerView.setWidth((int) (mDisplayName.getWidth() - (50 * getResources().getDisplayMetrics().density)));
-//            params.width = (int) (mDisplayName.getWidth() - (50 * getResources().getDisplayMetrics().density));
-//        }
-//        else{
-//            params.width = (int) (mStatus.getWidth() - (50 * getResources().getDisplayMetrics().density));
-//        }
-//        dividerView.setLayoutParams(params);
 
         mImageStorage = FirebaseStorage.getInstance().getReference();
 

@@ -32,7 +32,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="set_status">Set Status</string>
-    <string name="status_hint">Yours Status...</string>
+    <string name="status_hint">Your Status…</string>
     <string name="send_request">Send Request</string>
     <string name="cancel_request">Cancel Request</string>
     <string name="decline_request">Decline Request</string>

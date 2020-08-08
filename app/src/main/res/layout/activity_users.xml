@@ -13,6 +13,7 @@
         android:id="@+id/users_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/users_app_bar" />
+        android:layout_below="@id/users_app_bar"
+        tools:listitem="@layout/single_user_display" />
 
 </RelativeLayout>
