@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryBackground"
     tools:context=".RegisterActivity">
 
     <include
@@ -16,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:text="@string/create_a_new_account"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/reg_display_name"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -39,7 +40,9 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:hint="@string/enter_display_name"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/colorPrimaryText"
+            android:textColorHint="@color/colorAccent" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -60,7 +63,9 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:hint="@string/enter_email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorPrimaryText"
+            android:textColorHint="@color/colorAccent" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -81,7 +86,9 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:hint="@string/enter_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/colorPrimaryText"
+            android:textColorHint="@color/colorAccent" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

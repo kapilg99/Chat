@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/start_reg_activity"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="#FF4081"
         android:gravity="center_vertical"
         android:text="@string/already_have_an_account"
         android:textColor="@color/colorTextIcons" />

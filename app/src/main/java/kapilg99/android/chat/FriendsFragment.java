@@ -161,7 +161,7 @@ public class FriendsFragment extends Fragment {
             if (online) {
                 userOnlineView.setVisibility(View.VISIBLE);
             } else {
-                userOnlineView.setImageResource(android.R.drawable.presence_busy);
+                userOnlineView.setImageResource(R.drawable.user_offline_24px);
                 userOnlineView.setVisibility(View.VISIBLE);
             }
         }

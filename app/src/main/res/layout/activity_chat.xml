@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDivider"
+    android:background="@color/colorChatBackground"
     tools:context=".ChatActivity">
 
     <include
@@ -49,7 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="14"
-            android:hint="Message..." />
+            android:hint="Message..."
+            android:textColor="@color/colorPrimaryText"
+            android:textColorHighlight="@color/colorChatTextHighlight"
+            android:textColorHint="@color/colorChatTextHint"
+            app:boxStrokeColor="@color/colorAccent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/chat_send"

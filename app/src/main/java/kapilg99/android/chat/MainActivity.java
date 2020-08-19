@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -107,6 +108,14 @@ public class MainActivity extends AppCompatActivity {
             case (R.id.account_settings):
                 Intent sendToSettings = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(sendToSettings);
+                return true;
+
+            case (R.id.switch_mode):
+                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
                 return true;
 
             case (R.id.all_users):

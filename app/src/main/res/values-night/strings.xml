@@ -43,5 +43,5 @@
     <string name="invite_link">Link</string>
     <string name="change_profile_image">Change Image</string>
     <string name="change_status">Change Status</string>
-    <string name="switch_mode">Switch To Dark</string>
+    <string name="switch_mode">Switch To Light</string>
 </resources>

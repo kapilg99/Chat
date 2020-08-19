@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:background="@color/colorPrimaryBackground">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_avatar"
@@ -20,7 +21,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginBottom="6dp"
         android:layout_toEndOf="@id/user_avatar"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorPrimaryText"
         android:textIsSelectable="false"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -28,15 +29,15 @@
 
     <ImageView
         android:id="@+id/online_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="6dp"
         android:layout_toEndOf="@id/username"
         android:layout_toRightOf="@+id/username"
-        android:visibility="invisible"
-        tools:srcCompat="@android:drawable/presence_online" />
+        android:visibility="visible"
+        tools:srcCompat="@drawable/user_online_24px" />
 
     <TextView
         android:id="@+id/userstatus"
@@ -45,6 +46,7 @@
         android:layout_below="@id/username"
         android:layout_marginStart="15dp"
         android:layout_toEndOf="@id/user_avatar"
+        android:textColor="@color/colorPrimaryText"
         tools:text="User Status" />
 
     <View

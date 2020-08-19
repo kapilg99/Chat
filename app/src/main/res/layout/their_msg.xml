@@ -23,8 +23,8 @@
         android:linksClickable="true"
         android:maxWidth="250dp"
         android:paddingHorizontal="10dp"
-        android:textColor="@color/colorPrimaryText"
-        android:textColorLink="@color/colorPrimaryText"
+        android:textColor="#212121"
+        android:textColorLink="#212121"
         android:textIsSelectable="true"
         android:textSize="18sp"
         tools:text="Placeholder Text" />
