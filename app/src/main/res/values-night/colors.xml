@@ -8,11 +8,12 @@
     <color name="colorAccent">#90A4AE</color>
     <color name="colorPrimaryText">#fafafa</color>
     <color name="colorSecondaryText">#2e3c42</color>
-    <color name="colorDivider">#263238</color>
+    <color name="colorDivider">#37474F</color>
     <color name="colorTheirMsg">#e0e0e0</color>
     <color name="colorTheirMsgTime">#757575</color>
     <color name="colorCardBackground">#2e3c42</color>
     <color name="colorChatBackground">#1f292d</color>
     <color name="colorChatTextHint">#90A4AE</color>
     <color name="colorChatTextHighlight">#455A64</color>
+    <color name="colorIndicator">#fafafa</color>
 </resources>

@@ -18,6 +18,7 @@
             android:id="@+id/main_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/colorIndicator"
             app:tabIndicatorHeight="3dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
