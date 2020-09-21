@@ -33,6 +33,8 @@
         android:layout_marginBottom="4dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorChatTextHint"
         app:layout_constraintTop_toBottomOf="@id/register_toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -42,7 +44,7 @@
             android:hint="@string/enter_display_name"
             android:inputType="text"
             android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorAccent" />
+            android:textColorHint="@color/colorChatTextHint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -56,6 +58,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorChatTextHint"
         app:layout_constraintTop_toBottomOf="@+id/reg_display_name">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -65,7 +69,7 @@
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorAccent" />
+            android:textColorHint="@color/colorChatTextHint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -79,6 +83,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorChatTextHint"
         app:layout_constraintTop_toBottomOf="@+id/reg_email">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -88,7 +94,7 @@
             android:hint="@string/enter_password"
             android:inputType="textPassword"
             android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorAccent" />
+            android:textColorHint="@color/colorChatTextHint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

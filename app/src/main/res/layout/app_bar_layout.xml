@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,6 +9,7 @@
     android:theme="@style/Widget.MaterialComponents.Toolbar"
     app:layout_scrollFlags="noScroll"
     app:titleMargin="13dp"
-    app:titleTextColor="@color/colorTextIcons">
+    app:titleTextColor="@color/colorPrimaryText"
+    tools:text="Chat">
 
 </androidx.appcompat.widget.Toolbar>

@@ -46,7 +46,7 @@
         android:layout_below="@id/username"
         android:layout_marginStart="15dp"
         android:layout_toEndOf="@id/user_avatar"
-        android:textColor="@color/colorPrimaryText"
+        android:textColor="@color/colorChatTextHint"
         tools:text="User Status" />
 
     <View

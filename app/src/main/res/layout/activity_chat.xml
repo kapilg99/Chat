@@ -22,7 +22,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messages_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/my_msg" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -43,7 +44,7 @@
             android:layout_weight="1"
             android:background="@color/colorSecondaryText"
             android:padding="3dp"
-            android:src="@drawable/ic_add_photo" />
+            android:src="@drawable/ic_add_photo_alternate_36dp" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/chat_msg_body"

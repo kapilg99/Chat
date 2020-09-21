@@ -65,7 +65,7 @@ public class StatusActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             progressDialog.dismiss();
-
+                            finish();
                         } else {
                             Toast.makeText(StatusActivity.this, "Changes not saved", Toast.LENGTH_SHORT).show();
                         }

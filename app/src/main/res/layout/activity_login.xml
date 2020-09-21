@@ -40,7 +40,9 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="4dp"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorChatTextHint">
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
@@ -55,7 +57,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/colorPrimaryText"
-                    android:textColorHint="@color/colorAccent" />
+                    android:textColorHint="@color/colorChatTextHint" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,7 +67,9 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="4dp"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorChatTextHint">
 
                 <EditText
                     android:id="@+id/password"
@@ -83,7 +87,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/colorPrimaryText"
-                    android:textColorHint="@color/colorAccent" />
+                    android:textColorHint="@color/colorChatTextHint" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
